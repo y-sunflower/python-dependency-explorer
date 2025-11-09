@@ -43,6 +43,10 @@ class DependencyExplorer {
   async searchPackage(packageName) {
     if (!packageName) return;
 
+    const url = new URL(window.location);
+    url.searchParams.set("package", packageName);
+    window.history.replaceState({}, "", url);
+
     this.showLoading();
     this.hideError();
     this.hideResults();
