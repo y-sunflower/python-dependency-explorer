@@ -158,7 +158,6 @@ class DependencyExplorer {
 
     return {
       totalDependencies,
-      uniquePackages: allPackages.size,
       maxDepth,
       directDependencies: tree.children.length,
     };
@@ -186,10 +185,6 @@ class DependencyExplorer {
                     <div class="stat-item">
                         <span class="stat-number">${data.stats.totalDependencies}</span>
                         <span class="stat-label">Total Dependencies</span>
-                    </div>
-                    <div class="stat-item">
-                        <span class="stat-number">${data.stats.uniquePackages}</span>
-                        <span class="stat-label">Unique Packages</span>
                     </div>
                     <div class="stat-item">
                         <span class="stat-number">${data.stats.maxDepth}</span>
