@@ -56,11 +56,20 @@ class DependencyExplorer {
 
     const data = await response.json();
     const summary = data.info.summary;
+    const packageVersions = data.releases;
+    const versions = Object.keys(packageVersions);
+    const latest = versions
+      .sort((a, b) =>
+        a.localeCompare(b, undefined, { numeric: true, sensitivity: "base" })
+      )
+      .at(-1);
+
     const dependencies = this.extractRequiredDependencies(data);
     const tree = await this.buildDependencyTree(packageName, dependencies);
 
     return {
       summary: summary,
+      packageVersion: latest,
       package: packageName,
       tree: tree,
       stats: this.calculateStats(tree),
@@ -156,7 +165,7 @@ class DependencyExplorer {
   displayResults(data) {
     this.packageSummary.innerHTML = `
                     <p class="package-summary">
-                      <strong>${data.package}</strong>: ${data.summary}
+                      <a href="https://pypi.org/project/${data.package}/" target="_blank">${data.package}</a> (v${data.packageVersion}) — ${data.summary}
                     </p>
     `;
     this.statsGrid.innerHTML = `
