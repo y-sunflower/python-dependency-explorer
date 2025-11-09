@@ -16,7 +16,6 @@
           sans-serif;
         background: #000;
         color: #fff;
-        min-height: 100vh;
         line-height: 1.6;
       }
 
@@ -24,11 +23,32 @@
         max-width: 1200px;
         margin: 0 auto;
         padding: 2rem;
+        min-height: 90vh;
+      }
+
+      .footer-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 2rem;
+      }
+
+      .footer {
+        text-align: center;
+        color: #e3e3e3ff;
+      }
+
+      .yellow-sunflower {
+        color: #ffc300;
+      }
+
+      .github {
+        color: #ff4444;
       }
 
       .header {
         text-align: center;
         margin-bottom: 3rem;
+        margin-top: 2rem;
       }
 
       .header h1 {
@@ -269,6 +289,26 @@
             <!-- Dependency tree will be rendered here -->
           </div>
         </div>
+      </div>
+    </div>
+    <div class="footer-container">
+      <div class="footer">
+        <p>
+          Made by
+          <a
+            href="https://www.ysunflower.com/"
+            target="_blank"
+            class="yellow-sunflower"
+            >yellow sunflower</a
+          >
+          |
+          <a
+            href="https://github.com/y-sunflower/python-dependency-tracker"
+            target="_blank"
+            class="github"
+            >Github</a
+          >
+        </p>
       </div>
     </div>
 
@@ -515,20 +555,6 @@
       document.addEventListener("DOMContentLoaded", () => {
         new DependencyExplorer();
       });
-
-      // Add some example packages for quick testing
-      const examples = ["requests", "numpy", "django", "flask", "pandas"];
-      let exampleIndex = 0;
-
-      function rotateExample() {
-        const input = document.getElementById("packageInput");
-        input.placeholder = `Enter a Python package name (e.g., ${examples[exampleIndex]}...)`;
-        exampleIndex = (exampleIndex + 1) % examples.length;
-      }
-
-      // Rotate examples every 3 seconds
-      setInterval(rotateExample, 3000);
-      rotateExample(); // Initial call
     </script>
   </body>
 </html>
