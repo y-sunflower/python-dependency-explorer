@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="./style/style.css" />
     <link rel="stylesheet" href="./style/checkbox.css" />
     <title>PyPI Dependency Explorer</title>
   </head>
@@ -22,19 +22,6 @@
           autocomplete="off"
           autofocus
         />
-      </div>
-
-      <div class="checkbox-wrapper" style="display: none">
-        <p class="text-checkbox">versions</p>
-        <label class="switch" for="checkbox">
-          <input
-            type="checkbox"
-            id="checkbox"
-            class="messageCheckbox"
-            onchange="showVersion=this.checked;"
-          />
-          <div class="slider round"></div>
-        </label>
       </div>
 
       <div class="loading" id="loading">🔍 Analyzing dependencies...</div>

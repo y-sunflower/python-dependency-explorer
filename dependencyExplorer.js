@@ -7,8 +7,6 @@ class DependencyExplorer {
     this.statsGrid = document.getElementById("statsGrid");
     this.packageSummary = document.getElementById("summary");
     this.tree = document.getElementById("tree");
-    this.showVersion = false;
-    this.showVersionCB = document.getElementsByClassName("messageCheckbox")[0];
 
     this.initEvents();
   }
@@ -17,14 +15,6 @@ class DependencyExplorer {
     this.input.addEventListener("keypress", (e) => {
       if (e.key === "Enter") {
         this.searchPackage(this.input.value.trim());
-      }
-    });
-
-    this.showVersionCB.addEventListener("change", (e) => {
-      this.showVersion = e.target.checked;
-      const packageName = this.input.value.trim();
-      if (packageName) {
-        this.searchPackage(packageName);
       }
     });
 
@@ -81,35 +71,22 @@ class DependencyExplorer {
     const info = packageData.info;
     const requiresDist = info.requires_dist || [];
 
-    return requiresDist
-      .filter((req) => {
-        // Filter out optional dependencies (those with extra markers)
-        // Optional dependencies typically contain "extra ==" in the requirement string
-        return !req.includes("extra ==");
-      })
-      .map((req) => {
-        // Extract package name from requirement string
-        // Remove version specifiers and environment markers
-        // let packageName;
-        // if (this.showVersion) {
-        //   packageName = req;
-        // } else {
-        //   packageName = req
-        //     .split(";")[0] // Remove environment markers (e.g., python version)
-        //     .trim()
-        //     .split(/[<>!=]/)[0] // Remove version specifiers
-        //     .trim();
-        // }
-        const packageName = req
-          .split(";")[0] // Remove environment markers (e.g., python version)
-          .trim()
-          .split(/[<>!=]/)[0] // Remove version specifiers
-          .trim();
-
-        // Handle cases where package name might have [extra] suffix
-        return packageName.split("[")[0].toLowerCase();
-      })
-      .filter((pkg) => pkg && pkg.length > 0);
+    return [
+      ...new Set(
+        requiresDist
+          .filter((req) => !req.includes("extra =="))
+          .map((req) => {
+            return req
+              .split(";")[0] // remove extra spec (e.g., python version)
+              .trim()
+              .split(/[<>!=]/)[0] // remove version
+              .trim()
+              .split("[")[0] // just in case!
+              .toLowerCase();
+          })
+          .filter((pkg) => pkg && pkg.length > 0)
+      ),
+    ];
   }
 
   async buildDependencyTree(
@@ -130,7 +107,7 @@ class DependencyExplorer {
         const response = await fetch(`https://pypi.org/pypi/${dep}/json`);
         if (response.ok) {
           const data = await response.json();
-          const childDeps = this.extractRequiredDependencies(data);
+          let childDeps = this.extractRequiredDependencies(data);
           const childTree = await this.buildDependencyTree(
             dep,
             childDeps,
