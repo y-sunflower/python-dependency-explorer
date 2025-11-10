@@ -105,7 +105,8 @@ class DependencyExplorer {
               .split(/[<>!=]/)[0] // remove version
               .trim()
               .split("[")[0] // just in case!
-              .toLowerCase();
+              .toLowerCase()
+              .replace(/\s*\(.*/g, "");
           })
           .filter((pkg) => pkg && pkg.length > 0)
       ),
